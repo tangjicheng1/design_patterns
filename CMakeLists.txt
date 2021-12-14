@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
-set(CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 set(ROOT_DIR ${CMAKE_SOURCE_DIR})
 set(SRC_DIR ${ROOT_DIR}/src)
 set(BIN_DIR ${ROOT_DIR}/bin)
@@ -8,3 +8,5 @@ set(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
 set(LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR})
 
 add_executable(cpp_lang01 ${SRC_DIR}/cpp_lang01.cpp)
+add_executable(singleton ${SRC_DIR}/singleton.cpp)
+add_executable(factory ${SRC_DIR}/factory.cpp)

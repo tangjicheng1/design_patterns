@@ -25,5 +25,6 @@ int static_i = Print();
 
 int main() {
   std::cout << "Call main() " << std::endl;
+  std::cout << "C++ Standard: " << __cplusplus << std::endl;
   return 0;
 }
