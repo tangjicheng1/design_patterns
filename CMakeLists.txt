@@ -10,6 +10,7 @@ set(LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR})
 
 add_executable(singleton ${SRC_DIR}/singleton.cpp)
 add_executable(factory ${SRC_DIR}/factory.cpp)
+add_executable(pimpl ${SRC_DIR}/pimpl.cpp)
 
 add_executable(cpp_lang01 ${CPP_LANG_DIR}/cpp_lang01.cpp)
 add_executable(cpp_lang02 ${CPP_LANG_DIR}/cpp_lang02.cpp)
