@@ -1,0 +1,58 @@
+================================================
+  NLOC    CCN   token  PARAM  length  location  
+------------------------------------------------
+       4      1     20      0       4 Print@3-6@./src/cpp_lang/cpp_lang01.cpp
+       1      1     21      0       1 A::A@10-10@./src/cpp_lang/cpp_lang01.cpp
+       5      1     35      0       5 main@26-30@./src/cpp_lang/cpp_lang01.cpp
+      11      4     78      0      13 main@13-25@./src/cpp_lang/cpp_lang03.cpp
+       4      1     20      0       4 FromBase::Print@14-17@./src/cpp_lang/cpp_lang02.cpp
+       6      1     25      0       6 test01@20-25@./src/cpp_lang/cpp_lang02.cpp
+       1      1     17      0       1 A::A@30-30@./src/cpp_lang/cpp_lang02.cpp
+       1      1     17      0       1 A::~A@31-31@./src/cpp_lang/cpp_lang02.cpp
+       1      1     17      0       1 B::B@36-36@./src/cpp_lang/cpp_lang02.cpp
+       1      1     17      0       1 B::~B@37-37@./src/cpp_lang/cpp_lang02.cpp
+       4      1     10      0       4 test02@40-43@./src/cpp_lang/cpp_lang02.cpp
+       7      1     40      0       7 main@45-51@./src/cpp_lang/cpp_lang02.cpp
+       6      2     25      0       7 SingletonLazy::GetInstance@30-36@./src/singleton.cpp
+       6      1     21      0       6 SingletonLazy::DelInstance@38-43@./src/singleton.cpp
+       6      1     40      0       6 SingletonLazy::func@45-50@./src/singleton.cpp
+       1      1      7      0       1 SingletonLazy::~SingletonLazy@52-52@./src/singleton.cpp
+       1      1     13      0       1 SingletonLazy::SingletonLazy@54-54@./src/singleton.cpp
+       7      1     44      0       7 lazy_main@56-62@./src/singleton.cpp
+       4      1     13      0       4 singleton::Instance@73-76@./src/singleton.cpp
+       6      1     37      0       6 A::Print@81-86@./src/singleton.cpp
+       1      1      9      0       1 A::A@87-87@./src/singleton.cpp
+       1      1      5      0       1 A::~A@88-88@./src/singleton.cpp
+       5      1     28      0       5 template_singleton@94-98@./src/singleton.cpp
+       5      1     16      0       5 main@100-104@./src/singleton.cpp
+       6      1     29      0       6 Widget::func@20-25@./src/pimpl.cpp
+       4      1     13      0       4 Widget::my_func1@27-30@./src/pimpl.cpp
+       4      1     13      0       4 Widget::my_func2@32-35@./src/pimpl.cpp
+       4      1     17      0       4 Widget2::Impl::my_func1@59-62@./src/pimpl.cpp
+       4      1     17      0       4 Widget2::Impl::my_func2@64-67@./src/pimpl.cpp
+       3      1     14      0       3 Widget2::Impl::get_val@69-71@./src/pimpl.cpp
+       7      1     44      0       7 Widget2::func@73-79@./src/pimpl.cpp
+       6      1     28      0       6 test01@81-86@./src/pimpl.cpp
+       6      1     28      0       6 test02@88-93@./src/pimpl.cpp
+       5      1     16      0       5 main@95-99@./src/pimpl.cpp
+       1      1     18      0       1 Cat::Print@16-16@./src/factory.cpp
+       1      1     18      0       1 Dog::Print@21-21@./src/factory.cpp
+      18      3     60      1      18 AnimalFactory::Create@26-43@./src/factory.cpp
+      11      1     64      0      11 main@46-56@./src/factory.cpp
+6 file analyzed.
+==============================================================
+NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
+--------------------------------------------------------------
+     19       3.3     1.0       25.3         3     ./src/cpp_lang/cpp_lang01.cpp
+     15      11.0     4.0       78.0         1     ./src/cpp_lang/cpp_lang03.cpp
+     39       3.1     1.0       20.4         8     ./src/cpp_lang/cpp_lang02.cpp
+     74       4.1     1.1       21.5        12     ./src/singleton.cpp
+     74       4.9     1.0       21.9        10     ./src/pimpl.cpp
+     47       7.8     1.5       40.0         4     ./src/factory.cpp
+
+===============================================================================================================
+No thresholds exceeded (cyclomatic_complexity > 15 or length > 1000 or nloc > 1000000 or parameter_count > 100)
+==========================================================================================
+Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
+------------------------------------------------------------------------------------------
+       268       4.6     1.2       25.1       38            0      0.00    0.00
