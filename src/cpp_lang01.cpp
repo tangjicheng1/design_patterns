@@ -1,7 +1,6 @@
 #include <iostream>
 
-int Print()
-{
+int Print() {
   std::cout << "Call Print() " << std::endl;
   return 0;
 }
