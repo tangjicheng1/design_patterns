@@ -1,16 +1,16 @@
 代码行数统计:
 
-       6 text files.
-classified 6 files       6 unique files.                              
+       7 text files.
+classified 7 files       7 unique files.                              
        0 files ignored.
 
-github.com/AlDanial/cloc v 1.92  T=0.01 s (565.7 files/s, 34415.1 lines/s)
+github.com/AlDanial/cloc v 1.92  T=0.01 s (631.8 files/s, 36823.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                              6             61             36            268
+C++                              7             68             37            303
 -------------------------------------------------------------------------------
-SUM:                             6             61             36            268
+SUM:                             7             68             37            303
 -------------------------------------------------------------------------------
 
 圈复杂度统计:
@@ -18,6 +18,9 @@ SUM:                             6             61             36            268
 ================================================
   NLOC    CCN   token  PARAM  length  location  
 ------------------------------------------------
+       1      1      5      0       1 main@771-771@./build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c
+      16      6     95      2      27 main@776-802@./build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c
+      15      6     89      2      25 main@767-791@./build/CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp
        4      1     20      0       4 Print@3-6@./src/cpp_lang/cpp_lang01.cpp
        1      1     21      0       1 A::A@10-10@./src/cpp_lang/cpp_lang01.cpp
        5      1     35      0       5 main@26-30@./src/cpp_lang/cpp_lang01.cpp
@@ -42,29 +45,46 @@ SUM:                             6             61             36            268
        1      1      5      0       1 A::~A@88-88@./src/singleton.cpp
        5      1     28      0       5 template_singleton@94-98@./src/singleton.cpp
        5      1     16      0       5 main@100-104@./src/singleton.cpp
+       1      1     18      0       1 Sub1::func1@12-12@./src/facade.cpp
+       1      1     18      0       1 Sub1::func2@13-13@./src/facade.cpp
+       1      1     18      0       1 Sub2::func1@18-18@./src/facade.cpp
+       1      1     18      0       1 Sub2::func2@19-19@./src/facade.cpp
+       4      1     23      0       4 Client::Client@24-27@./src/facade.cpp
+       6      1     29      0       6 Client::start@28-33@./src/facade.cpp
+       5      1     17      0       5 main@40-44@./src/facade.cpp
        6      1     29      0       6 Widget::func@20-25@./src/pimpl.cpp
        4      1     13      0       4 Widget::my_func1@27-30@./src/pimpl.cpp
        4      1     13      0       4 Widget::my_func2@32-35@./src/pimpl.cpp
-       4      1     17      0       4 Widget2::Impl::my_func1@59-62@./src/pimpl.cpp
-       4      1     17      0       4 Widget2::Impl::my_func2@64-67@./src/pimpl.cpp
-       3      1     14      0       3 Widget2::Impl::get_val@69-71@./src/pimpl.cpp
-       7      1     44      0       7 Widget2::func@73-79@./src/pimpl.cpp
-       6      1     28      0       6 test01@81-86@./src/pimpl.cpp
-       6      1     28      0       6 test02@88-93@./src/pimpl.cpp
-       5      1     16      0       5 main@95-99@./src/pimpl.cpp
+       4      1     17      0       4 Widget2::Impl::my_func1@60-63@./src/pimpl.cpp
+       4      1     17      0       4 Widget2::Impl::my_func2@65-68@./src/pimpl.cpp
+       1      1     14      0       1 Widget2::Impl::get_val@70-70@./src/pimpl.cpp
+       7      1     44      0       7 Widget2::func@72-78@./src/pimpl.cpp
+       6      1     28      0       6 test01@80-85@./src/pimpl.cpp
+       6      1     28      0       6 test02@87-92@./src/pimpl.cpp
+       5      1     16      0       5 main@94-98@./src/pimpl.cpp
        1      1     18      0       1 Cat::Print@16-16@./src/factory.cpp
        1      1     18      0       1 Dog::Print@21-21@./src/factory.cpp
       18      3     60      1      18 AnimalFactory::Create@26-43@./src/factory.cpp
       11      1     64      0      11 main@46-56@./src/factory.cpp
-6 file analyzed.
+16 file analyzed.
 ==============================================================
 NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
 --------------------------------------------------------------
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/singleton.dir/compiler_depend.ts
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/facade.dir/compiler_depend.ts
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/pimpl.dir/compiler_depend.ts
+     53       8.5     3.5       50.0         2     ./build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c
+     56      15.0     6.0       89.0         1     ./build/CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/factory.dir/compiler_depend.ts
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang01.dir/compiler_depend.ts
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang02.dir/compiler_depend.ts
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang03.dir/compiler_depend.ts
      19       3.3     1.0       25.3         3     ./src/cpp_lang/cpp_lang01.cpp
      15      11.0     4.0       78.0         1     ./src/cpp_lang/cpp_lang03.cpp
      39       3.1     1.0       20.4         8     ./src/cpp_lang/cpp_lang02.cpp
      74       4.1     1.1       21.5        12     ./src/singleton.cpp
-     74       4.9     1.0       21.9        10     ./src/pimpl.cpp
+     37       2.7     1.0       20.1         7     ./src/facade.cpp
+     72       4.7     1.0       21.9        10     ./src/pimpl.cpp
      47       7.8     1.5       40.0         4     ./src/factory.cpp
 
 ===============================================================================================================
@@ -72,4 +92,4 @@ No thresholds exceeded (cyclomatic_complexity > 15 or length > 1000 or nloc > 10
 ==========================================================================================
 Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
 ------------------------------------------------------------------------------------------
-       268       4.6     1.2       25.1       38            0      0.00    0.00
+       426       4.7     1.3       26.8       48            0      0.00    0.00

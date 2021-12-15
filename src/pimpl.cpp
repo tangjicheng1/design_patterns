@@ -47,30 +47,29 @@ class Widget2 {
 };
 
 // .cpp文件
-class Widget2::Impl{
-  public:
+class Widget2::Impl {
+ public:
   void my_func1();
   void my_func2();
   int get_val();
-  private:
+
+ private:
   int val_;
 };
 
-void Widget2::Impl::my_func1(){
+void Widget2::Impl::my_func1() {
   this->val_ = 1;
   return;
 }
 
-void Widget2::Impl::my_func2(){
+void Widget2::Impl::my_func2() {
   this->val_ += 20;
   return;
 }
 
-int Widget2::Impl::get_val(){
-  return this->val_;
-}
+int Widget2::Impl::get_val() { return this->val_; }
 
-void Widget2::func(){
+void Widget2::func() {
   ptr_impl_ = new Impl();
   ptr_impl_->my_func1();
   ptr_impl_->my_func2();
@@ -78,21 +77,21 @@ void Widget2::func(){
   return;
 }
 
-void test01(){
+void test01() {
   std::cout << "Test 1 : " << std::endl;
   Widget w;
   w.func();
   return;
 }
 
-void test02(){
+void test02() {
   std::cout << "Test 2 : " << std::endl;
   Widget2 w;
   w.func();
   return;
 }
 
-int main(){
+int main() {
   test01();
   test02();
   return 0;

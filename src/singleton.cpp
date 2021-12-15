@@ -88,7 +88,7 @@ class A : public singleton<A> {
   ~A() {}
 
  private:
-    int count;
+  int count;
 };
 
 int template_singleton() {
