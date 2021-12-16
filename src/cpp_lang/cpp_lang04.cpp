@@ -15,8 +15,8 @@ class B : public A {
 };
 
 int main() {
-  A* ptr_b = new B();
-  delete ptr_b;
+  A* base_ptr_to_b = new B();
+  delete base_ptr_to_b;
   return 0;
 }
 
