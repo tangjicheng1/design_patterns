@@ -1,16 +1,16 @@
 代码行数统计:
 
-       9 text files.
-classified 9 files       9 unique files.                              
+      10 text files.
+classified 10 files      10 unique files.                              
        0 files ignored.
 
-github.com/AlDanial/cloc v 1.92  T=0.02 s (597.1 files/s, 31842.9 lines/s)
+github.com/AlDanial/cloc v 1.92  T=0.02 s (574.1 files/s, 29051.8 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                              9             77             54            349
+C++                             10             81             54            371
 -------------------------------------------------------------------------------
-SUM:                             9             77             54            349
+SUM:                            10             81             54            371
 -------------------------------------------------------------------------------
 
 圈复杂度统计:
@@ -21,6 +21,8 @@ SUM:                             9             77             54            349
        1      1      5      0       1 main@771-771@./build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c
       16      6     95      2      27 main@776-802@./build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c
       15      6     89      2      25 main@767-791@./build/CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp
+       4      1     38      1       4 A::A@5-8@./src/cpp_lang/cpp_lang05.cpp
+       5      1     23      0       5 main@22-26@./src/cpp_lang/cpp_lang05.cpp
        1      1     17      0       1 A::A@6-6@./src/cpp_lang/cpp_lang04.cpp
        1      1     17      0       1 A::~A@8-8@./src/cpp_lang/cpp_lang04.cpp
        1      1     17      0       1 B::B@13-13@./src/cpp_lang/cpp_lang04.cpp
@@ -77,7 +79,7 @@ SUM:                             9             77             54            349
        1      1     18      0       1 Dog::Print@21-21@./src/factory.cpp
       18      3     60      1      18 AnimalFactory::Create@26-43@./src/factory.cpp
       11      1     64      0      11 main@46-56@./src/factory.cpp
-20 file analyzed.
+22 file analyzed.
 ==============================================================
 NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
 --------------------------------------------------------------
@@ -88,10 +90,12 @@ NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
      56      15.0     6.0       89.0         1     ./build/CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp
       2       0.0     0.0        0.0         0     ./build/CMakeFiles/templ.dir/compiler_depend.ts
       2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang04.dir/compiler_depend.ts
+      2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang05.dir/compiler_depend.ts
       2       0.0     0.0        0.0         0     ./build/CMakeFiles/factory.dir/compiler_depend.ts
       2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang01.dir/compiler_depend.ts
       2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang02.dir/compiler_depend.ts
       2       0.0     0.0        0.0         0     ./build/CMakeFiles/cpp_lang03.dir/compiler_depend.ts
+     22       4.5     1.0       30.5         2     ./src/cpp_lang/cpp_lang05.cpp
      16       1.8     1.0       17.6         5     ./src/cpp_lang/cpp_lang04.cpp
      19       3.3     1.0       25.3         3     ./src/cpp_lang/cpp_lang01.cpp
      15      11.0     4.0       78.0         1     ./src/cpp_lang/cpp_lang03.cpp
@@ -107,4 +111,4 @@ No thresholds exceeded (cyclomatic_complexity > 15 or length > 1000 or nloc > 10
 ==========================================================================================
 Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
 ------------------------------------------------------------------------------------------
-       476       4.2     1.3       25.7       59            0      0.00    0.00
+       500       4.2     1.3       25.9       61            0      0.00    0.00
