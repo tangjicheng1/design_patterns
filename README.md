@@ -1,4 +1,5 @@
 # design_patterns
+![example workflow](https://github.com/tjich/design_patterns/actions/workflows/cmake.yml/badge.svg)
 C++设计模式
 
 
