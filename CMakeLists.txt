@@ -14,6 +14,8 @@ add_executable(facade ${SRC_DIR}/facade.cpp)
 add_executable(templ ${SRC_DIR}/templ.cpp)
 add_executable(strategy ${SRC_DIR}/strategy.cpp)
 add_executable(table_driven ${SRC_DIR}/table_driven.cpp)
+add_executable(chain_of_responsibility ${SRC_DIR}/chain_of_responsibility.cpp)
+
 
 add_executable(cpp_lang01 ${CPP_LANG_DIR}/cpp_lang01.cpp)
 add_executable(cpp_lang02 ${CPP_LANG_DIR}/cpp_lang02.cpp)
