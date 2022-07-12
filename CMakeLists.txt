@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(ROOT_DIR ${CMAKE_SOURCE_DIR})
 set(SRC_DIR ${ROOT_DIR}/src)
 set(CPP_LANG_DIR ${SRC_DIR}/cpp_lang)
