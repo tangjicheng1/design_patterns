@@ -23,7 +23,7 @@ add_patterns(templ)
 add_patterns(strategy)
 add_patterns(table_driven)
 add_patterns(chain_of_responsibility)
-# add_patterns(crtp)
+add_patterns(crtp)
 
 add_langs(cpp_lang01)
 add_langs(cpp_lang02)
