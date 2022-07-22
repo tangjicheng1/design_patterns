@@ -1,7 +1,9 @@
+#include <array>
 #include <iostream>
 #include <map>
 #include <string>
 #include <utility>
+#include <tuple>
 #include <vector>
 
 struct A {
@@ -78,19 +80,52 @@ void test04() {
   c.y = 3;
 
   auto [x1, y1] = c;
-  {
-    auto [x2, y2] = c;
-  }
+  { auto [x2, y2] = c; }
 
   std::cout << c.x << " , " << c.y << std::endl;
   std::cout << x1 << " , " << y1 << std::endl;
   std::cout << __cplusplus << "  end test04\n";
 }
 
+void test05() {
+  std::array<int, 2> std_arr{3, 5};
+  std::vector<std::array<int, 2>> vec;
+  for (int i = 0; i < 4; i++) {
+    vec.push_back(std::array<int, 2>{i, 10 * i});
+  }
+  std::cout << "origin:\n";
+  for (auto iter : vec) {
+    std::cout << iter[0] << " , " << iter[1] << std::endl;
+  }
+  for (auto& iter : vec) {
+    auto& [x, y] = iter;
+    x += 1;
+    y += 2;
+  }
+  std::cout << "now:\n";
+  for (auto iter : vec) {
+    std::cout << iter[0] << " , " << iter[1] << std::endl;
+  }
+}
+
+void test06() {
+  std::array<int, 2> std_arr{3, 5};
+  auto [x, y] = std_arr;
+  std::cout << x << " , " << y << std::endl;
+  std::tie(y, x) = std_arr;
+  std::cout << x << " , " << y << std::endl;
+  std::tuple<int, int> tup{1, 3};
+  tup = std_arr;
+  std::cout << "tuple" << std::endl;
+  std::cout << std::get<0>(tup) << " , " << std::get<1>(tup) << std::endl;
+}
+
 int main() {
   // test01();
   // test02();
   // test03();
-  test04();
+  // test04();
+  // test05();
+  test06();
   return 0;
 }
