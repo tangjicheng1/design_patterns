@@ -19,6 +19,10 @@ void test01() {
   a_struct.print();
 }
 
+void test02() {
+  
+}
+
 int main() {
   test01();
   return 0;

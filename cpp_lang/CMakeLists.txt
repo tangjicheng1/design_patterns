@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 17)
-set(SRC_DIR ${CMAKE_SOURCE_DIR})
+set(SRC_DIR ${CMAKE_SOURCE_DIR}/cpp_lang)
 
 function(add_langs filename)
 add_executable(${filename} ${SRC_DIR}/${filename}.cpp)
