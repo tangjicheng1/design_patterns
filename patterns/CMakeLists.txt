@@ -1,18 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 17)
-set(ROOT_DIR ${CMAKE_SOURCE_DIR})
-set(SRC_DIR ${ROOT_DIR}/src)
-set(CPP_LANG_DIR ${SRC_DIR}/cpp_lang)
-set(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
-set(LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR})
+set(SRC_DIR ${CMAKE_SOURCE_DIR})
 
 function(add_patterns filename)
 add_executable(${filename} ${SRC_DIR}/${filename}.cpp)
-endfunction()
-
-function(add_langs filename)
-add_executable(${filename} ${SRC_DIR}/cpp_lang/${filename}.cpp)
 endfunction()
 
 add_patterns(singleton)
@@ -26,8 +18,3 @@ add_patterns(chain_of_responsibility)
 add_patterns(crtp)
 add_patterns(adl)
 
-add_langs(cpp_lang01)
-add_langs(cpp_lang02)
-add_langs(cpp_lang03)
-add_langs(cpp_lang04)
-add_langs(cpp_lang05)
