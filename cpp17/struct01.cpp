@@ -112,12 +112,12 @@ void test06() {
   std::array<int, 2> std_arr{3, 5};
   auto [x, y] = std_arr;
   std::cout << x << " , " << y << std::endl;
-  std::tie(y, x) = std_arr;
-  std::cout << x << " , " << y << std::endl;
-  std::tuple<int, int> tup{1, 3};
-  tup = std_arr;
-  std::cout << "tuple" << std::endl;
-  std::cout << std::get<0>(tup) << " , " << std::get<1>(tup) << std::endl;
+  // std::tie(y, x) = std_arr;
+  // std::cout << x << " , " << y << std::endl;
+  // std::tuple<int, int> tup{1, 3};
+  // tup = std_arr;
+  // std::cout << "tuple" << std::endl;
+  // std::cout << std::get<0>(tup) << " , " << std::get<1>(tup) << std::endl;
 }
 
 int main() {
