@@ -8,3 +8,4 @@ add_executable(${filename} ${SRC_DIR}/${filename}.cpp)
 endfunction()
 
 add_cpp11(tuple01)
+add_cpp11(integral_constant01)
