@@ -9,3 +9,4 @@ endfunction()
 
 add_cpp11(tuple01)
 add_cpp11(integral_constant01)
+add_cpp11(initializer_list1)
