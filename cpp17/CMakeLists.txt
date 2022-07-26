@@ -7,4 +7,6 @@ function(add_cpp17 filename)
 add_executable(${filename} ${SRC_DIR}/${filename}.cpp)
 endfunction()
 
+add_executable(inline_test ${SRC_DIR}/inline01.cpp ${SRC_DIR}/inline02.cpp)
+
 add_cpp17(struct01)
