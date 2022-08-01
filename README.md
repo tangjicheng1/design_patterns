@@ -1,7 +1,8 @@
 # design_patterns
 
-C++设计模式
+![ci_status](https://github.com/tjich/design_patterns/actions/workflows/cmake.yml/badge.svg)
 
+C++设计模式
 
 # 7种设计原则
 1. 开闭原则
