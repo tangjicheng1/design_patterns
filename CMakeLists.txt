@@ -42,6 +42,7 @@ add_patterns(table_driven)
 add_patterns(chain_of_responsibility)
 add_patterns(crtp)
 add_patterns(adl)
+add_patterns(builder)
 
 add_langs(cpp_lang01)
 add_langs(cpp_lang02)
