@@ -1,6 +1,7 @@
 .cache
 build_*
-build/
-bin/
-.vscode/
+build
+bin
+.vscode
 cmake-*
+.idea
