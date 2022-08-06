@@ -3,3 +3,4 @@ build_*
 build/
 bin/
 .vscode/
+cmake-*

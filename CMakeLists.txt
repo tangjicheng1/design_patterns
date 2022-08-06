@@ -56,6 +56,7 @@ add_langs(global_var1)
 add_cpp11(tuple01)
 add_cpp11(integral_constant01)
 add_cpp11(initializer_list1)
+add_cpp11(array1)
 
 add_cpp17(struct01)
 add_cpp17(struct02)
