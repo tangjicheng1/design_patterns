@@ -7,61 +7,51 @@
 #include <ratio>
 #include <string_view>
 
-inline double now_time() {
-  auto t1 = std::chrono::steady_clock::now();
+#include <spdlog/spdlog.h>
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+const char* sen = "Hello world, this is a test, OK, one two three";
+int N = 1000;
+int test_count = 10;
 
-  auto t2 = std::chrono::steady_clock::now();
-
-  auto d = std::chrono::duration_cast<std::chrono::duration<double, std::milli> >(t2 - t1);
-
-  std::cout << d.count() << std::endl;
-
-  return 0.0;
+void printf_test() {
+  for (int i = 0; i < N; i++) {
+    printf("%s\n", sen);
+  }
 }
 
-int print_times = 1000;
-
-int print_time() {
-  std::string print_string("Hello World! Hello World! Hello World! Hello World! Hello World! Hello World! Hello World! ");
-
-  auto t1 = std::chrono::steady_clock::now();
-
-  const char* s = print_string.c_str();
-
-  for (int i = 0; i < print_times; ++i) {
-    printf("%s\n", s);
+void cout_test() {
+  for (int i = 0; i < N; i++) {
+    std::cout << sen << std::endl;
   }
-
-  auto t2 = std::chrono::steady_clock::now();
-
-  auto cost_time = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-  // std::cout << "printf: " << cost_time.count() << " ms" << std::endl;
-  return cost_time.count();
 }
 
-int cout_time() {
-  std::string print_string("Hello World! Hello World! Hello World! Hello World! Hello World! Hello World! Hello World! ");
-
-  auto t1 = std::chrono::steady_clock::now();
-
-  for (int i = 0; i < print_times; ++i) {
-    std::cout << print_string << std::endl;
+void spdlog_test() {
+  for (int i = 0; i < N; i++) {
+    spdlog::info(sen);
   }
+}
 
-  auto t2 = std::chrono::steady_clock::now();
+void test() {
+  for (int i = 0; i < test_count; i++) {
+    auto t0 = std::chrono::steady_clock::now();
+    printf_test();
+    auto t1 = std::chrono::steady_clock::now();
+    cout_test();
+    auto t2 = std::chrono::steady_clock::now();
+    spdlog_test();
+    auto t3 = std::chrono::steady_clock::now();
 
-  auto cost_time = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-  // std::cout << "cout: " << cost_time.count() << " ms" << std::endl;
-  return cost_time.count();
+    auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0);
+    auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
+    auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(t3 - t2);
+    std::cout << "printf: " << duration1.count() << " us" << std::endl;
+    std::cout << "cout: " << duration2.count() << " us" << std::endl;
+    std::cout << "spdlog: " << duration3.count() << " us" << std::endl;
+  }
 }
 
 int main() {
-  int print_cost = print_time();
-  int cout_cost = cout_time();
-  std::cout << "printf: " << print_cost << " ms" << std::endl;
-  std::cout << "cout: " << cout_cost << " ms" << std::endl;
+  test();
 
   return 0;
 }
