@@ -54,6 +54,7 @@ add_langs(cpp_lang05)
 # add_langs(printf_cout)
 add_langs(global_var1)
 add_langs(array_ref_test)
+add_langs(vector)
 
 add_cpp11(tuple01)
 add_cpp11(integral_constant01)
