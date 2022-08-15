@@ -56,6 +56,7 @@ add_langs(global_var1)
 add_langs(array_ref_test)
 add_langs(vector_test)
 add_langs(array_test)
+add_langs(deque_test)
 
 add_cpp11(tuple01)
 add_cpp11(integral_constant01)
