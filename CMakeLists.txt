@@ -58,6 +58,7 @@ add_langs(vector_test)
 add_langs(array_test)
 add_langs(deque_test)
 add_langs(list_test)
+add_langs(stack_test)
 
 add_cpp11(tuple01)
 add_cpp11(integral_constant01)
