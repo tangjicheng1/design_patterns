@@ -18,6 +18,10 @@ void test1() {
   for (auto i : a) {
     std::cout << i << std::endl;
   }
+
+  std::cout << std::get<0>(a) << std::endl;
+  // std::cout << std::get<3>(a) << std::endl;
+  std::cout << a.size() << std::endl;
 }
 
 int main() {
