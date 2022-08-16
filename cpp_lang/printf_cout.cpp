@@ -7,7 +7,7 @@
 #include <ratio>
 #include <string_view>
 
-#include <spdlog/spdlog.h>
+// #include <spdlog/spdlog.h>
 
 const char* sen = "Hello world, this is a test, OK, one two three";
 int N = 1000;
@@ -25,11 +25,11 @@ void cout_test() {
   }
 }
 
-void spdlog_test() {
-  for (int i = 0; i < N; i++) {
-    spdlog::info(sen);
-  }
-}
+// void spdlog_test() {
+//   for (int i = 0; i < N; i++) {
+//     spdlog::info(sen);
+//   }
+// }
 
 void test() {
   for (int i = 0; i < test_count; i++) {
@@ -38,7 +38,7 @@ void test() {
     auto t1 = std::chrono::steady_clock::now();
     cout_test();
     auto t2 = std::chrono::steady_clock::now();
-    spdlog_test();
+    // spdlog_test();
     auto t3 = std::chrono::steady_clock::now();
 
     auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0);
