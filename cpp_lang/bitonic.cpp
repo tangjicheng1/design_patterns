@@ -62,10 +62,31 @@ void build_bitonic(std::vector<KV>& data, int begin, int end) {
   }
 }
 
-void test2() {
+bool is_sorted(const std::vector<KV>& data, bool larger = true) {
+  if (larger) {
+    for (int i = 0; i < data.size() - 1; i++) {
+      if (data[i].key > data[i + 1].key) {
+        return false;
+      }
+    }
+    return true;
+  }
+  for (int i = 0; i < data.size() - 1; i++) {
+    if (data[i].key < data[i + 1].key) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void test2(int argc, char** argv) {
+  int N = 16;
+  if (argc == 2) {
+    int input_n = atoi(argv[1]);
+    N = input_n;
+  }
   srand((unsigned int)time(NULL));
   std::vector<KV> data;
-  int N = 16;
   data.reserve(N);
   for (int i = 0; i < N; i++) {
     KV temp;
@@ -85,6 +106,8 @@ void test2() {
   for (auto iter : data) {
     std::cout << iter.key << " " << iter.index << std::endl;
   }
+  bool is_ok = is_sorted(data);
+  std::cout << std::boolalpha << is_ok << std::endl;
 }
 
 void test1() {
@@ -119,8 +142,8 @@ void test1() {
   }
 }
 
-int main() {
+int main(int argc, char** argv) {
   // test1();
-  test2();
+  test2(argc, argv);
   return 0;
 }
