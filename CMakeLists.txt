@@ -24,6 +24,7 @@ endfunction()
 add_each(${ROOT_DIR}/patterns)
 add_each(${ROOT_DIR}/cpp_lang)
 add_each(${ROOT_DIR}/cpp11)
+add_each(${ROOT_DIR}/parallel)
 
 # add cpp17
 set(cpp17_dir ${CMAKE_SOURCE_DIR}/cpp17)
