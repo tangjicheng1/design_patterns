@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 enable_testing()
 
 set(ROOT_DIR ${CMAKE_SOURCE_DIR})
 include_directories(${ROOT_DIR}/include)
+
+message(STATUS "C++ STANDARD: ${CMAKE_CXX_STANDARD}")
 
 function(add_each dir_name)
 file(GLOB cur_files ${dir_name}/*.cpp)
@@ -15,7 +17,7 @@ foreach(cur_file ${cur_files})
   list(LENGTH cur_exe_file_list list_len)
   math(EXPR list_last "${list_len} - 1")
   list(GET cur_exe_file_list ${list_last} cur_exe)
-  message(STATUS "Added ${cur_exe}")
+  # message(STATUS "Added ${cur_exe}")
   add_executable(${cur_exe} ${cur_file})
   add_test(NAME ${cur_exe} COMMAND ${cur_exe})
 endforeach()
