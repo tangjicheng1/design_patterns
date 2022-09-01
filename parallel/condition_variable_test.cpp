@@ -34,7 +34,7 @@ void producer() {
     printf("[Producer] %d\n", produce);
     fifo_queue.push(produce);
     lock_for_queue.unlock();
-    cv.notify_one();
+    cv.notify_all();
     if(stop) {
       break;
     }
@@ -50,7 +50,7 @@ void consumer() {
     printf("[Consumer] %d\n", consume);
     fifo_queue.pop();
     lock_for_queue.unlock();
-    cv.notify_one();
+    cv.notify_all();
     if(stop) {
       break;
     }
