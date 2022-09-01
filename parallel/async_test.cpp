@@ -18,8 +18,8 @@ int simple_worker2() {
 }
 
 void test1() {
-  std::async(std::launch::async, simple_worker);
-  std::async(std::launch::async, simple_worker2);
+  auto f1 = std::async(std::launch::async, simple_worker);
+  auto f2 = std::async(std::launch::async, simple_worker2);
 }
 
 int main() {
