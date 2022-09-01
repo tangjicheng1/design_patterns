@@ -1,8 +1,8 @@
 #include <atomic>
+#include <chrono>
 #include <cstdio>
 #include <future>
 #include <iostream>
-#include <chrono>
 
 std::atomic_flag f1 = ATOMIC_FLAG_INIT;
 
