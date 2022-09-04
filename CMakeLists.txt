@@ -26,19 +26,12 @@ foreach(cur_file ${cur_files})
 endforeach()
 endfunction()
 
-add_each(${ROOT_DIR}/patterns)
 add_each(${ROOT_DIR}/cpp_lang)
-add_each(${ROOT_DIR}/cpp11)
 add_each(${ROOT_DIR}/parallel)
+add_each(${ROOT_DIR}/patterns)
 
-# add cpp17
-set(cpp17_dir ${CMAKE_SOURCE_DIR}/cpp17)
-function(add_cpp17 filename)
-add_executable(${filename} ${cpp17_dir}/${filename}.cpp)
-add_test(NAME ${filename} COMMAND ${filename})
-endfunction()
+# add not_single_dir
+set(not_single_dir ${CMAKE_SOURCE_DIR}/not_single)
 
-add_cpp17(struct01)
-add_cpp17(struct02)
-add_executable(inline_test ${cpp17_dir}/inline01.cpp ${cpp17_dir}/inline02.cpp)
+add_executable(inline_test ${not_single_dir}/inline01.cpp ${not_single_dir}/inline02.cpp)
 add_test(NAME inline_test COMMAND inline_test)
