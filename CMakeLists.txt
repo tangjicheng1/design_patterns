@@ -32,6 +32,5 @@ add_each(${ROOT_DIR}/patterns)
 
 # add not_single_dir
 set(not_single_dir ${CMAKE_SOURCE_DIR}/not_single)
-
 add_executable(inline_test ${not_single_dir}/inline01.cpp ${not_single_dir}/inline02.cpp)
-add_test(NAME inline_test COMMAND inline_test)
+add_executable(fstream_test ${not_single_dir}/fstream_test.cpp)
