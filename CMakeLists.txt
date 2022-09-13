@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 20)
 
+option(build_cpp_lang "Build cpp_lang dir" ON)
+option(build_patterns "Build patterns dir" ON)
+option(build_parallel "Build cpp_lang dir" ON)
+option(build_not_single "Build cpp_lang dir" ON)
+
 enable_testing()
 
 set(ROOT_DIR ${CMAKE_SOURCE_DIR})
@@ -26,12 +31,22 @@ foreach(cur_file ${cur_files})
 endforeach()
 endfunction()
 
-add_each(${ROOT_DIR}/cpp_lang)
-add_each(${ROOT_DIR}/parallel)
-add_each(${ROOT_DIR}/patterns)
+if(build_cpp_lang)
+  add_each(${ROOT_DIR}/cpp_lang)
+endif(build_cpp_lang)
+
+if(build_parallel)
+  add_each(${ROOT_DIR}/parallel)
+endif(build_parallel)
+
+if(build_patterns)
+  add_each(${ROOT_DIR}/patterns)
+endif(build_patterns)
 
 # add not_single_dir
 set(not_single_dir ${CMAKE_SOURCE_DIR}/not_single)
-add_executable(inline_test ${not_single_dir}/inline01.cpp ${not_single_dir}/inline02.cpp)
-add_executable(fstream_test ${not_single_dir}/fstream_test.cpp)
-add_executable(extern_test ${not_single_dir}/extern_test_01.cpp ${not_single_dir}/extern_test_02.cpp)
+if(build_not_single)
+  add_executable(inline_test ${not_single_dir}/inline01.cpp ${not_single_dir}/inline02.cpp)
+  add_executable(fstream_test ${not_single_dir}/fstream_test.cpp)
+  add_executable(extern_test ${not_single_dir}/extern_test_01.cpp ${not_single_dir}/extern_test_02.cpp)
+endif(build_not_single)
