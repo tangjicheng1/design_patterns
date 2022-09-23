@@ -7,3 +7,15 @@
 [submodule "3rd/googletest"]
 	path = 3rd/googletest
 	url = https://github.com/google/googletest.git
+[submodule "3rd/grpc"]
+	path = 3rd/grpc
+	url = https://github.com/grpc/grpc.git
+[submodule "3rd/re2"]
+	path = 3rd/re2
+	url = https://github.com/google/re2.git
+[submodule "3rd/folly"]
+	path = 3rd/folly
+	url = https://github.com/facebook/folly.git
+[submodule "3rd/protobuf"]
+	path = 3rd/protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
