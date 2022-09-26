@@ -54,6 +54,5 @@ endif(build_not_single)
 
 # json test
 if(build_json_test)
-  include_directories(3rd/json/include)
   include(json_test/CMakeLists.txt)
 endif(build_json_test)
