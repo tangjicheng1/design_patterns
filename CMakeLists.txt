@@ -6,6 +6,7 @@ option(build_cpp_lang "Build cpp_lang dir" ON)
 option(build_patterns "Build patterns dir" ON)
 option(build_parallel "Build cpp_lang dir" ON)
 option(build_not_single "Build cpp_lang dir" ON)
+option(build_json_test "Build json test dir" ON)
 
 enable_testing()
 
@@ -50,3 +51,9 @@ if(build_not_single)
   add_executable(fstream_test ${not_single_dir}/fstream_test.cpp)
   add_executable(extern_test ${not_single_dir}/extern_test_01.cpp ${not_single_dir}/extern_test_02.cpp)
 endif(build_not_single)
+
+# json test
+if(build_json_test)
+  include_directories(3rd/json/include)
+  include(json_test/CMakeLists.txt)
+endif(build_json_test)
