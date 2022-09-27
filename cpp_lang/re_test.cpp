@@ -56,14 +56,32 @@ void test4() {
 }
 
 void test5() {
+  std::string pattern_str("<(.){1}>.*</\\1>");
+  std::regex pattern(pattern_str);
+  std::smatch m;
+  std::string text("<h>Hello</h> <p>World</p>");
 
+  while (text != "") {
+    bool is_matched = std::regex_search(text, m, pattern);
+    if (!is_matched) {
+      break;
+    }
+    std::cout << m.size() << std::endl;
+    std::cout << "prefix: " << m.prefix().str() << " matched: " << m[0].str() << " suffix: " << m.suffix().str()
+              << std::endl;
+    std::cout << "position: " << m.position() << std::endl;
+    std::cout << std::boolalpha << is_matched << std::endl;
+
+    text = text.substr(m.position() + m[0].length());
+  }
+  return;
 }
 
 int main() {
   // test1();
   // test2();
   // test3();
-  test4();
-  // test5();
+  // test4();
+  test5();
   return 0;
 }
