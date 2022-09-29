@@ -26,7 +26,9 @@ jobs:
       run:   |
             sudo apt update
             sudo apt install gcc-11 g++-11
-            cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+            cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+            -Dbuild_cpp_lang=ON -Dbuild_patterns=ON -Dbuild_parallel=ON -Dbuild_not_single=ON \
+            -Dbuild_json_test=ON -Dbuild_unix_api=ON
       shell: bash
       env:
         CC:   gcc-11

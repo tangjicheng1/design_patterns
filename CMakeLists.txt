@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.0)
 project(design_patterns LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 20)
 
-option(build_cpp_lang "Build cpp_lang dir" ON)
-option(build_patterns "Build patterns dir" ON)
-option(build_parallel "Build cpp_lang dir" ON)
-option(build_not_single "Build cpp_lang dir" ON)
-option(build_json_test "Build json test dir" ON)
-option(build_unix_api "Build unix api dir" ON)
+option(build_cpp_lang "Build cpp_lang dir" OFF)
+option(build_patterns "Build patterns dir" OFF)
+option(build_parallel "Build cpp_lang dir" OFF)
+option(build_not_single "Build cpp_lang dir" OFF)
+option(build_json_test "Build json test dir" OFF)
+option(build_unix_api "Build unix api dir" OFF)
 
 enable_testing()
 
