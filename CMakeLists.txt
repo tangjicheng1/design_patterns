@@ -7,6 +7,7 @@ option(build_patterns "Build patterns dir" ON)
 option(build_parallel "Build cpp_lang dir" ON)
 option(build_not_single "Build cpp_lang dir" ON)
 option(build_json_test "Build json test dir" ON)
+option(build_unix_api "Build unix api dir" ON)
 
 enable_testing()
 
@@ -56,3 +57,7 @@ endif(build_not_single)
 if(build_json_test)
   include(json_test/CMakeLists.txt)
 endif(build_json_test)
+
+if(build_unix_api)
+  add_each(${ROOT_DIR}/unix_api)
+endif(build_unix_api)
