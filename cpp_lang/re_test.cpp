@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <regex>
+#include <string>
 
 void test1() {
   std::regex html("<.*>.*</.*>");
@@ -77,11 +77,24 @@ void test5() {
   return;
 }
 
+void test6() {
+  // 匹配对话
+  std::regex pattern("(\"|“|”)((?!\"|“|”).)*\\1");
+  std::smatch m;
+  std::vector<std::string> vec{"你好，“哈哈”", "“怎么说呢”", "你说啥，“什么”"};
+  for (auto iter : vec) {
+    bool is_match = std::regex_match(iter, m, pattern);
+    std::cout << std::boolalpha << is_match << std::endl;
+  }
+}
+
 int main() {
   // test1();
   // test2();
   // test3();
   // test4();
-  test5();
+  // test5();
+  test6();
+
   return 0;
 }
