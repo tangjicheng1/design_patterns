@@ -1,0 +1,7 @@
+.cache
+build_*
+build
+bin
+.vscode
+cmake-*
+.idea
