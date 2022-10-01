@@ -7,7 +7,8 @@ option(build_patterns "Build patterns dir" OFF)
 option(build_parallel "Build cpp_lang dir" OFF)
 option(build_not_single "Build cpp_lang dir" OFF)
 option(build_json_test "Build json test dir" OFF)
-option(build_unix_api "Build unix api dir" on)
+option(build_unix_api "Build unix api dir" OFF)
+option(build_eigen_test "Build eigen test" OFF)
 
 enable_testing()
 
@@ -61,3 +62,8 @@ endif(build_json_test)
 if(build_unix_api)
   add_each(${ROOT_DIR}/unix_api)
 endif(build_unix_api)
+
+if(build_eigen_test) 
+  include_directories(${ROOT_DIR}/3rd/eigen)
+  add_each(${ROOT_DIR}/eigen_test)
+endif(build_eigen_test)
