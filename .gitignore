@@ -5,4 +5,3 @@ bin
 .vscode
 cmake-*
 .idea
-eigen_test/Eigen
