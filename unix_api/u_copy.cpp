@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 #define BUFFER_SIZE 1024
 
@@ -9,6 +11,7 @@ void my_copy(const char* input, const char* output) {
   int input_fd = open(input, O_RDONLY);
   if (input_fd == -1) {
     printf("[Error] cannot open file %s\n", input);
+    perror("Error");
     exit(1);
   }
   mode_t output_mode = S_IRUSR | S_IRGRP | S_IROTH | S_IWGRP | S_IWOTH | S_IWUSR;
