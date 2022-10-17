@@ -1,4 +1,4 @@
-#ifdef __GNUC__
+#if defined(__GNUC__) && defined(__linux)
 #  include <gnu/libc-version.h>
 
 #  include <iostream>
@@ -16,7 +16,7 @@ int test(int argc, char** argv) {
 #endif
 
 int main(int argc, char** argv) {
-#ifdef __GNUC__
+#if defined(__GNUC__) && defined(__linux)
   return test(argc, argv);
 #else
   return 0;
