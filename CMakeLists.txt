@@ -9,6 +9,12 @@ option(build_not_single "Build cpp_lang dir" OFF)
 option(build_json_test "Build json test dir" OFF)
 option(build_unix_api "Build unix api dir" OFF)
 option(build_eigen_test "Build eigen test" OFF)
+option(define_debug "Define DEBUG macro" OFF)
+
+if(define_debug)
+  add_definitions(-DDEBUG)
+endif(define_debug)
+
 
 enable_testing()
 
