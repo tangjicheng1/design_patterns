@@ -1,8 +1,10 @@
 #include <array>
 #include <cstdio>
 #include <iostream>
-#include <span>
 #include <vector>
+
+/*
+#include <span>
 
 void test01() {
   std::vector<float> vec{1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -18,8 +20,8 @@ void test01() {
   vec_span[1];
   a_span[2] = 0;
 }
-
+*/
 int main() {
-  test01();
+  // test01();
   return 0;
 }
