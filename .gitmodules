@@ -13,9 +13,6 @@
 [submodule "3rd/folly"]
 	path = 3rd/folly
 	url = https://github.com/facebook/folly.git
-[submodule "3rd/protobuf"]
-	path = 3rd/protobuf
-	url = https://github.com/protocolbuffers/protobuf.git
 [submodule "3rd/abseil-cpp"]
 	path = 3rd/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
