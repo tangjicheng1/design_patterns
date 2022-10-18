@@ -13,6 +13,7 @@
 #define _GNU_SOURCE
 #include <pthread.h>
 #include <sys/syscall.h>
+#include <stdbool.h>
 #include "tlpi_hdr.h"
 
 static size_t blockSize;
