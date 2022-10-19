@@ -24,7 +24,8 @@ int main(int argc, char** argv) {
     return 0;
   }
 
-  int fd = open(argv[1], O_RDWR | O_CREAT);
+  mode_t open_mode = S_IWGRP | S_IWOTH | S_IWUSR | S_IRGRP | S_IROTH | S_IRUSR;
+  int fd = open(argv[1], O_RDWR | O_CREAT | O_TRUNC, open_mode);
   CHECK(fd != -1);
   char command_type = 0;
   for (int i = 2; i < argc; i++) {
