@@ -10,7 +10,8 @@ int main(int argc, char** argv) {
     exit(1);
     return 0;
   }
-  int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC);
+  mode_t open_mode = S_IWGRP | S_IWOTH | S_IWUSR | S_IRGRP | S_IROTH | S_IRUSR;
+  int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, open_mode);
   if (fd == -1) {
     const char* err_str = "err: cannot open file\n";
     write(STDOUT_FILENO, err_str, strlen(err_str));
