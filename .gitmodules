@@ -1,15 +1,6 @@
 [submodule "3rd/spdlog"]
 	path = 3rd/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "3rd/googletest"]
-	path = 3rd/googletest
-	url = https://github.com/google/googletest.git
-[submodule "3rd/grpc"]
-	path = 3rd/grpc
-	url = https://github.com/grpc/grpc.git
-[submodule "3rd/re2"]
-	path = 3rd/re2
-	url = https://github.com/google/re2.git
 [submodule "3rd/folly"]
 	path = 3rd/folly
 	url = https://github.com/facebook/folly.git

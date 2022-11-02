@@ -7,7 +7,7 @@ option(build_patterns "Build patterns dir" OFF)
 option(build_parallel "Build cpp_lang dir" OFF)
 option(build_not_single "Build cpp_lang dir" OFF)
 option(build_json_test "Build json test dir" OFF)
-option(build_unix_api "Build unix api dir" OFF)
+option(build_unix_api "Build unix api dir" on)
 option(build_eigen_test "Build eigen test" OFF)
 
 enable_testing()
