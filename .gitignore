@@ -2,6 +2,6 @@
 build_*
 build
 bin
-.vscode
+.vscode/settings.json
 cmake-*
 .idea

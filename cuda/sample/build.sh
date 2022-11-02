@@ -1,0 +1,1 @@
+nvcc -std=c++11 -lcudnn -lcublas cnn.cpp -o cnn_test

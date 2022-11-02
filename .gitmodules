@@ -8,3 +8,6 @@
 	path = 3rd/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
 
+[submodule "cuda/cutlass"]
+	path = cuda/cutlass
+	url = git@github.com:NVIDIA/cutlass.git
