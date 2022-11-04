@@ -1,1 +1,0 @@
-nvcc -std=c++11 -g conv_transpose.cpp conv_transpose_test.cpp -lcudnn -o conv_test
