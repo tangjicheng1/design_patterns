@@ -6,10 +6,10 @@
 
 struct ConvTransposeParam {
   std::vector<int> dilations;
-  int groups;
   std::vector<int> output_padding;
   std::vector<int> pads;
   std::vector<int> strides;
+  int groups;
 };
 
 class ConvTranspose final {
@@ -21,9 +21,9 @@ class ConvTranspose final {
   ConvTranspose operator=(ConvTranspose&& other) = delete;
   ConvTranspose operator=(const ConvTranspose& other) = delete;
 
-  void InferShape(const std::vector<size_t>& input_shape, const std::vector<size_t>& weight_shape, const ConvTransposeParam& param,
-                  std::vector<size_t>& output_shape) const;
-  void FindBestAlgorithms(const Tensor& input, const Tensor& weight, const ConvTransposeParam& param, Tensor& output);
+  std::vector<size_t> InferShape(const std::vector<size_t>& input_shape, const std::vector<size_t>& weight_shape,
+                                 const ConvTransposeParam& param) const;
+  void FindBestAlgorithms(const std::vector<size_t>& input, const std::vector<size_t>& weight, const ConvTransposeParam& param);
   void Conv1dTranspose(const Tensor& input, const Tensor& weight, const ConvTransposeParam& param, Tensor& output);
   void Conv2dTranspose(const Tensor& input, const Tensor& weight, const ConvTransposeParam& param, Tensor& output);
   void Conv3dTranspose(const Tensor& input, const Tensor& weight, const ConvTransposeParam& param, Tensor& output);
@@ -35,6 +35,4 @@ class ConvTranspose final {
   cudnnFilterDescriptor_t weight_desc_;
   cudnnConvolutionDescriptor_t conv_desc_;
   cudnnConvolutionBwdDataAlgo_t algo_;
-  size_t workspace_bytes_;
-  void* workspace_data_;
 };

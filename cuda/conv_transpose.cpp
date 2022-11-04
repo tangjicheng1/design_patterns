@@ -17,8 +17,6 @@ ConvTranspose::ConvTranspose() {
   CHECK_CUDNN(cudnnCreateFilterDescriptor(&weight_desc_));
   CHECK_CUDNN(cudnnCreateConvolutionDescriptor(&conv_desc_));
   algo_ = CUDNN_CONVOLUTION_BWD_DATA_ALGO_0;
-  workspace_bytes_ = 0;
-  workspace_data_ = nullptr;
   return;
 }
 
@@ -28,17 +26,16 @@ ConvTranspose::~ConvTranspose() {
   CHECK_CUDNN(cudnnDestroyTensorDescriptor(output_desc_));
   CHECK_CUDNN(cudnnDestroyFilterDescriptor(weight_desc_));
   CHECK_CUDNN(cudnnDestroyConvolutionDescriptor(conv_desc_));
-  cudaFree(workspace_data_);
   return;
 }
 
 // input_shape: NCHW, weight_shape: CBhw , output_shape: NBHW
-void ConvTranspose::InferShape(const std::vector<size_t>& input_shape, const std::vector<size_t>& weight_shape,
-                               const ConvTransposeParam& param, std::vector<size_t>& output_shape) const {
+std::vector<size_t> ConvTranspose::InferShape(const std::vector<size_t>& input_shape, const std::vector<size_t>& weight_shape,
+                               const ConvTransposeParam& param) const {
   // output_shape[i] = stride[i] * (input_size[i] - 1) + output_padding[i] +
   // ((kernel_shape[i] - 1) * dilations[i] + 1)
   // - pads[start_i] - pads[end_i]
-  output_shape.resize(input_shape.size());
+  std::vector<size_t> output_shape(input_shape.size());
   output_shape[0] = input_shape[0];
   output_shape[1] = weight_shape[1];
 
@@ -47,7 +44,7 @@ void ConvTranspose::InferShape(const std::vector<size_t>& input_shape, const std
     output_shape[i] = param.strides[axis] * (input_shape[i] - 1) + param.output_padding[axis] +
                       ((weight_shape[i] - 1) * param.dilations[axis] + 1) - 2 * param.pads[axis];
   }
-  return;
+  return output_shape;
 }
 
 void ConvTranspose::Conv2dTranspose(const Tensor& input, const Tensor& weight, const ConvTransposeParam& param,

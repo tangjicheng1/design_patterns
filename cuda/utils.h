@@ -21,7 +21,6 @@
 // GPU
 struct Tensor {
   void* data;
-  size_t size;
   std::vector<size_t> shape;
 };
 

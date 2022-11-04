@@ -19,31 +19,28 @@ void test1() {
 
   Tensor input_gpu;
   input_gpu.shape = input.shape;
-  input_gpu.size = shape2size(input.shape);
   print_shape("input", input_gpu.shape);
-  cudaMalloc((void**)&input_gpu.data, input_gpu.size * sizeof(float));
-  cudaMemcpy(input_gpu.data, input.data.data(), input_gpu.size * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMalloc((void**)&input_gpu.data, shape2size(input.shape) * sizeof(float));
+  cudaMemcpy(input_gpu.data, input.data.data(), shape2size(input.shape) * sizeof(float), cudaMemcpyHostToDevice);
 
   Tensor weight_gpu;
   weight_gpu.shape = weight.shape;
-  weight_gpu.size = shape2size(weight_gpu.shape);
   print_shape("weight", weight_gpu.shape);
-  cudaMalloc((void**)&weight_gpu.data, weight_gpu.size * sizeof(float));
-  cudaMemcpy(weight_gpu.data, weight.data.data(), weight_gpu.size * sizeof(float), cudaMemcpyHostToDevice);
+  cudaMalloc((void**)&weight_gpu.data, shape2size(weight_gpu.shape) * sizeof(float));
+  cudaMemcpy(weight_gpu.data, weight.data.data(), shape2size(weight_gpu.shape) * sizeof(float), cudaMemcpyHostToDevice);
 
   Tensor output_gpu;
   ConvTranspose conv_transpose;
-  conv_transpose.InferShape(input_gpu.shape, weight_gpu.shape, param, output_gpu.shape);
-  output_gpu.size = shape2size(output_gpu.shape);
+  output_gpu.shape = conv_transpose.InferShape(input_gpu.shape, weight_gpu.shape, param);
   print_shape("output", output_gpu.shape);
-  cudaMalloc((void**)&output_gpu.data, output_gpu.size * sizeof(float));
+  cudaMalloc((void**)&output_gpu.data, shape2size(output_gpu.shape) * sizeof(float));
 
   conv_transpose.Conv2dTranspose(input_gpu, weight_gpu, param, output_gpu);
 
   Matrix output;
   output.shape = output_gpu.shape;
   output.data.resize(shape2size(output_gpu.shape));
-  cudaMemcpy(output.data.data(), output_gpu.data, output_gpu.size * sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(output.data.data(), output_gpu.data, shape2size(output_gpu.shape) * sizeof(float), cudaMemcpyDeviceToHost);
 
   std::cout << "out: ";
   for (auto iter : output.shape) {
