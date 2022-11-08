@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cudnn.h>
+#include <math.h>
 #include <stddef.h>
 
 #include <fstream>
@@ -76,4 +77,17 @@ inline void print_shape(const std::string& tensor_name, const std::vector<size_t
     std::cout << iter << " ";
   }
   std::cout << std::endl;
+}
+
+inline bool check_data(const std::vector<float>& data1, const std::vector<float>& data2, float eps) {
+  bool is_equal = true;
+  if (data1.size() != data2.size()) {
+    return false;
+  }
+  for (int i = 0; i < data1.size(); i++) {
+    if (fabsf(data1[i] - data2[i]) > eps) {
+      return false;
+    }
+  }
+  return true;
 }

@@ -9,7 +9,6 @@ struct ConvTransposeParam {
   std::vector<int> output_padding;
   std::vector<int> pads;
   std::vector<int> strides;
-  int groups;
 };
 
 class ConvTranspose final {

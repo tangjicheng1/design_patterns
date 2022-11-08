@@ -12,7 +12,6 @@ void test1() {
 
   ConvTransposeParam param;
   param.dilations = {1, 1};
-  param.groups = 1;
   param.output_padding = {0, 0};
   param.pads = {0, 0};
   param.strides = {1, 1};
@@ -47,11 +46,21 @@ void test1() {
     std::cout << iter << " ";
   }
   std::cout << std::endl;
-  write_data(output.data, shape2size(output.shape), "./output.my.txt");
 
   cudaFree(input_gpu.data);
   cudaFree(weight_gpu.data);
   cudaFree(output_gpu.data);
+
+  write_data(output.data, shape2size(output.shape), "output.my.out2");
+
+  std::vector<float> correct_output_data = read_data(shape2size(output.shape), "./output.my.out");
+  float eps = 1e-4;
+  bool is_equal = check_data(output.data, correct_output_data, eps);
+  if (!is_equal) {
+    printf("Result error with eps = 1e-5\n");
+    exit(1);
+  }
+
   return;
 }
 
