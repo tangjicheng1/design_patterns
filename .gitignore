@@ -7,3 +7,4 @@ cmake-*
 .idea
 *.csv
 *.so*
+*.onnx
