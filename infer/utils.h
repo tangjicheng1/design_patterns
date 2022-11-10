@@ -29,6 +29,14 @@
     }                                                          \
   } while (0)
 
+#define CHECK_POINTER(p)                                       \
+  do {                                                         \
+    if ((p) == nullptr) {                                      \
+      fprintf(stderr, "[Error] %s: %d\n", __FILE__, __LINE__); \
+      abort();                                                 \
+    }                                                          \
+  } while (0)
+
 // 防止与onnxruntime的TensorInfo重名
 struct MyTensorInfo {
   std::string name;
