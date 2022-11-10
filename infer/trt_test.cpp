@@ -35,7 +35,7 @@ class NoLogger : public nvinfer1::ILogger {
  public:
   void log(Severity severity, nvinfer1::AsciiChar const* msg) noexcept override {
     // do NOT need output log
-    printf("[TensorRT] %s\n", msg);
+    // printf("[TensorRT] %s\n", msg);
     return;
   }
 };
@@ -45,6 +45,7 @@ NoLogger g_logger;
 // std::unique_ptr<nvinfer1::IExecutionContext> context_ = nullptr;
 
 void test_infer(const char* model_filename) {
+  printf("[TensorRT] Building Engine ...\n");
   std::unique_ptr<nvinfer1::IBuilder> builder(nvinfer1::createInferBuilder(g_logger));
   unsigned int explicit_batch = 1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
   std::unique_ptr<nvinfer1::INetworkDefinition> network(builder->createNetworkV2(explicit_batch));
