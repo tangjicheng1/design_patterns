@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "/usr/local/cuda/include"
+                "/usr/local/cuda/include",
+                "/opt/TensorRT-8.4.3.1/include"
             ],
             "defines": [],
             "compilerPath": "/usr/local/bin/clang",
