@@ -2,6 +2,7 @@
 
 #include <NvInfer.h>
 #include <NvOnnxParser.h>
+#include <NvInferVersion.h>
 #include <cuda_runtime_api.h>
 
 #include <stdio.h>
@@ -13,6 +14,8 @@
 #include <vector>
 
 const int run_loop = 100;
+const int count_begin = 50;
+const double warmup_time = 10000.0;  // ms, == 10 second.
 
 struct DevBuff final {
   void* data;
@@ -100,26 +103,39 @@ void test_infer(const char* model_filename) {
   }
 
   bool is_ok;
-  int count = 0;
+  double warmup_cost = 0.0;
   double sum_cost = 0.0;
-  for (int i = 0; i < run_loop; i++) {
+  int count = 0;
+  int i = 0;
+  while (true) {
     cudaDeviceSynchronize();
     double start_ms = now_ms();
     is_ok = context->executeV2(all_buff.data());
     cudaDeviceSynchronize();
     double end_ms = now_ms();
 
+    // warm up
     double cur_cost = end_ms - start_ms;
-    if (i > 10) {
+    warmup_cost += cur_cost;
+    if (warmup_cost < warmup_time) {
+      continue;
+    }
+
+    i += 1;
+    if (i > count_begin) {
       count += 1;
       sum_cost += cur_cost;
+    }
+
+    if (i > run_loop) {
+      break;
     }
 
     if (!is_ok) {
       printf("Error: TensorRT runtime error\n");
       abort();
     } else {
-      printf("cost: %lf\n", cur_cost);
+      // printf("cost: %lf\n", cur_cost);
     }
   }
 
@@ -135,6 +151,7 @@ void test_infer(const char* model_filename) {
 }
 
 int main(int argc, char** argv) {
+  std::cout << "TensorRT Version: " << NV_TENSORRT_MAJOR << "." << NV_TENSORRT_MINOR << std::endl;
   if (argc != 2) {
     printf("usage: %s model.onnx\n", argv[0]);
     return 1;

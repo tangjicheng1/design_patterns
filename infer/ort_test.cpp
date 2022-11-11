@@ -17,6 +17,8 @@ const OrtApi* g_ort = nullptr;
 OrtAllocator* default_allocator = nullptr;
 
 const int run_loop = 100;
+const int count_begin = 50;
+const double warmup_time = 10000.0;  // ms, == 10 second.
 
 void enable_cuda(OrtSessionOptions* session_options) {
   OrtCUDAProviderOptions cuda_options;
@@ -120,24 +122,39 @@ int run_inference(OrtSession* session) {
 
   OrtRunOptions* run_options = nullptr;
 
-  int run_count = 0;
+  double warmup_cost = 0.0;
   double sum_cost = 0.0;
-  for (int i = 0; i < run_loop; i++) {
+  int count = 0;
+  int i = 0;
+  while(true) {
     cudaDeviceSynchronize();
     double start_ms = now_ms();
     ORT_ABORT_ON_ERROR(g_ort->RunWithBinding(session, run_options, io_binding));
     cudaDeviceSynchronize();
     double end_ms = now_ms();
     double cost_ms = end_ms - start_ms;
-    printf("cost: %lf\n", cost_ms);
-    if (i > 10) {
-      run_count += 1;
+
+    // warm up
+    double cur_cost = end_ms - start_ms;
+    warmup_cost += cur_cost;
+    if (warmup_cost < warmup_time) {
+      continue;
+    }
+
+    i += 1;
+    // printf("cost: %lf\n", cost_ms);
+    if (i > count_begin) {
+      count += 1;
       sum_cost += cost_ms;
+    }
+
+    if (i > run_loop) {
+      break;
     }
   }
 
-  if (run_count > 0) {
-    printf("average cost: %lf\n", sum_cost / run_count);
+  if (count > 0) {
+    printf("average cost: %lf\n", sum_cost / count);
   }
 
   // free ortvalue
