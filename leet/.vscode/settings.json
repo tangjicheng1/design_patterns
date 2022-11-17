@@ -1,3 +1,10 @@
 {
-  "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
+  "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+  "files.associations": {
+    "*.proto": "proto3",
+    "*.proto3": "proto3",
+    "*.log": "plaintext",
+    "*.cu": "cpp",
+    "vector": "cpp"
+  }
 }
