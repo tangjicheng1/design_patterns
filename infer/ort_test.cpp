@@ -180,6 +180,7 @@ void test_infer(const char* model_filename) {
   OrtSessionOptions* session_options;
   ORT_ABORT_ON_ERROR(g_ort->CreateSessionOptions(&session_options));
   assert(env != nullptr && session_options != nullptr);
+  ORT_ABORT_ON_ERROR(g_ort->SetOptimizedModelFilePath(session_options, "./opt.onnx"));
   enable_cuda(session_options);
 
   OrtSession* session;
