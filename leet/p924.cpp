@@ -57,7 +57,7 @@ int minMalwareSpread(std::vector<std::vector<int>>& graph, std::vector<int>& ini
     color_count[colors[i]] += 1;
   }
 
-  // std::sort(initial.begin(), initial.end(), comp);
+  std::sort(initial.begin(), initial.end(), comp);
 
   int max_node_count = 0;
   int index = initial[0];
