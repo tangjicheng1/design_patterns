@@ -1,4 +1,4 @@
-all: ort_test trt_test
+all: ort_test trt_test ort_model_opt
 
 CC := g++
 CC_FLAGS := -std=c++11 -g -Wall -O3
@@ -16,7 +16,13 @@ trt_test: trt_test.cpp
 	$(CC) $(CC_FLAGS) $(LD_FLAGS) $(INCLUDE_FLAGS) trt_test.cpp \
 	 -lcudart -lnvinfer -lnvonnxparser -o trt_test
 
+ort_model_opt: ort_model_opt.cpp
+	$(CC) $(CC_FLAGS) $(LD_FLAGS) $(INCLUDE_FLAGS) ort_model_opt.cpp \
+	-lonnxruntime -o ort_model_opt 
+
+
 .PHONY: clean
 clean:
 	-rm -rf ort_test
 	-rm -rf trt_test
+	-rm -rf ort_model_opt
