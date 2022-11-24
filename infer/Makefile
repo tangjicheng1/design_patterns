@@ -1,12 +1,19 @@
+UNAME_S := $(shell uname -s)
 all: ort_test trt_test ort_model_opt
-
-CC := g++
-CC_FLAGS := -std=c++11 -g -Wall -O3
 
 # onnxruntime library and header has been in system path
 # if not, add onnxruntime library path and include path below
-LD_FLAGS := -L /usr/local/cuda/lib64 -L /opt/TensorRT-8.4.3.1/lib 
-INCLUDE_FLAGS := -I /usr/local/cuda/include -I /opt/TensorRT-8.4.3.1/include
+LD_FLAGS := 
+INCLUDE_FLAGS := 
+ifeq ($(UNAME_S),Darwin)
+
+else 
+	LD_FLAGS += -L /usr/local/cuda/lib64 -L /opt/TensorRT-8.4.3.1/lib 
+	INCLUDE_FLAGS += -I /usr/local/cuda/include -I /opt/TensorRT-8.4.3.1/include
+endif
+
+CC := g++
+CC_FLAGS := -std=c++11 -g -Wall -O3
 
 ort_test: ort_test.cpp
 	$(CC) $(CC_FLAGS) $(LD_FLAGS) $(INCLUDE_FLAGS) ort_test.cpp \
