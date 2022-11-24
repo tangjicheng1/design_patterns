@@ -1,6 +1,6 @@
 #pragma once
-#include "tensor.h"
 #include <cudnn.h>
+#include "tensor.h"
 
 struct ResidualBlockParam {
   int batch;
@@ -24,16 +24,20 @@ struct AlgoParam {
 };
 
 class ResidualBlock {
-public:
+ public:
   void init(const ResidualBlockParam& param);
   void exec(const std::vector<Tensor*>& inputs, std::vector<Tensor*>& output);
   void fini();
-private:
+
+ private:
   AlgoParam find_best_algo();
-  std::vector<int> infer_shape(const ResidualBlockParam& param);
-private:
+  std::vector<int> infer_shape(const cudnnConvolutionDescriptor_t& conv_desc, const cudnnTensorDescriptor_t& input_desc,
+                               const cudnnFilterDescriptor_t& weight_desc);
+
+ private:
   Tensor weight_;
   Tensor bias_;
+  Tensor z_;
   cudnnHandle_t handle_;
   cudnnTensorDescriptor_t input_desc_;
   cudnnTensorDescriptor_t output_desc_;

@@ -16,7 +16,8 @@ class Tensor final {
   Tensor() : data_(nullptr) {}
   Tensor(const std::vector<int>& shape) {
     int size = shape2size(shape);
-    cudaMalloc((void**)&data_, size);
+    cudaMalloc((void**)&data_, sizeof(float) * size);
+    shape_ = shape;
   }
   ~Tensor() { free(); }
 

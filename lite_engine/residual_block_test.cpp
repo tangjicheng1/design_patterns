@@ -7,12 +7,12 @@ const double warmup_time = 10000.0;  // ms, == 10 second.
 
 void test1() {
   ResidualBlockParam param;
-  int batch = 1;
+  int batch = 16;
   param.batch = batch;
-  param.in_channel = 16;
-  param.out_channel = 16;
-  param.input_h = 256;
-  param.input_w = 256;
+  param.in_channel = 256;
+  param.out_channel = 256;
+  param.input_h = 16;
+  param.input_w = 16;
   param.kernel_h = 3;
   param.kernel_w = 3;
   param.stride_h = 1;
@@ -25,12 +25,14 @@ void test1() {
   ResidualBlock res;
   res.init(param);
 
-  std::vector<int> input_shape = {batch, 16, 256, 256};
-  std::vector<int> output_shape = {batch, 16, 256, 256};
+  std::vector<int> input_shape = {batch, param.in_channel, param.input_h, param.input_w};
+  std::vector<int> output_shape = {batch, param.out_channel, 256, 256};
   Tensor input(input_shape);
   Tensor output(output_shape);
+  Tensor z(output_shape);
   input.copy_from_host(generate_cpu_data(shape2size(input_shape)));
-  std::vector<Tensor*> input_vec = {&input};
+  z.copy_from_host(generate_cpu_data(shape2size(output_shape)));
+  std::vector<Tensor*> input_vec = {&input, &z};
   std::vector<Tensor*> output_vec = {&output};
 
   double warmup_cost = 0.0;
