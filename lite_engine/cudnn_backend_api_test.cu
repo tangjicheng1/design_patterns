@@ -36,8 +36,9 @@ inline void print_dims(int64_t* dims) {
   return;
 }
 
-cudnnBackendDescriptor_t GetTensorDescriptor(const std::initializer_list<int64_t>& dims, int64_t id,
-                                             bool is_virtual = false) {
+// input dims must be (n, c, h, w), returned TensorDescriptor must be binded to a pointer with NHWC layout memory.
+cudnnBackendDescriptor_t GetTensorDescriptorNHWC(const std::initializer_list<int64_t>& dims, int64_t id,
+                                                 bool is_virtual = false) {
   if (dims.size() != 4) {
     printf("[Error] [%s:%d] cudnn Backend API only support dims == 4\n", __FILE__, __LINE__);
     exit(1);
@@ -53,18 +54,20 @@ cudnnBackendDescriptor_t GetTensorDescriptor(const std::initializer_list<int64_t
   dims_ptr = dims_vec.data();
 #endif
   std::vector<int64_t> strides(dims.begin(), dims.end());
-  // NCHW
+
+  // NCHW format, cudnn conv/conv_transpose fusion only support layout == NHWC
   strides[0] = strides[1] * strides[2] * strides[3];
   strides[1] = strides[2] * strides[3];
   strides[2] = strides[3];
   strides[3] = 1;
 
   // NHWC
-  // std::vector<int64_t> dims_vec_for_nhwc(dims.begin(), dims.end());
+  std::vector<int64_t> dims_vec_for_nhwc(dims.begin(), dims.end());
   // strides[0] = dims_vec_for_nhwc[1] * dims_vec_for_nhwc[2] * dims_vec_for_nhwc[3];
   // strides[1] = 1;
   // strides[2] = dims_vec_for_nhwc[1] * dims_vec_for_nhwc[3];
-  // strides[3] = dims_vec_for_nhwc[2];
+  // strides[3] = dims_vec_for_nhwc[1];
+
   CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_TENSOR_DESCRIPTOR, &tensor_desc));
   CHECK_CUDNN(cudnnBackendSetAttribute(tensor_desc, CUDNN_ATTR_TENSOR_DATA_TYPE, CUDNN_TYPE_DATA_TYPE, 1, &dtype));
   CHECK_CUDNN(cudnnBackendSetAttribute(tensor_desc, CUDNN_ATTR_TENSOR_DIMENSIONS, CUDNN_TYPE_INT64, 4, dims_ptr));
@@ -152,6 +155,72 @@ cudnnBackendDescriptor_t GetConvOp(cudnnBackendDescriptor_t input_desc, cudnnBac
   return conv_op;
 }
 
+cudnnBackendDescriptor_t GetConvTransposeOp(cudnnBackendDescriptor_t input_desc, cudnnBackendDescriptor_t w_desc,
+                                            cudnnBackendDescriptor_t output_desc,
+                                            const std::initializer_list<int64_t>& pads,
+                                            const std::initializer_list<int64_t>& strides) {
+  if (pads.size() != 2 || strides.size() != 2) {
+    printf("[Error] [%s:%d] cudnn Backend API only support pads.dim == 2 && strides.dim == 2\n", __FILE__, __LINE__);
+    exit(1);
+  }
+
+  // set convolution descriptor
+  cudnnBackendDescriptor_t conv_desc;
+  int64_t conv_dim = 2;
+  cudnnDataType_t conv_dtype = CUDNN_DATA_FLOAT;
+  cudnnConvolutionMode_t conv_mode = CUDNN_CROSS_CORRELATION;
+  int64_t dilation[] = {1, 1};
+
+  int64_t* pads_ptr = nullptr;
+  int64_t* strides_ptr = nullptr;
+#if defined(__cplusplus) && __cplusplus >= 201703L
+  pads_ptr = pads.data();
+  strides_ptr = strides.data();
+#else
+  std::vector<int64_t> pads_vec(pads.begin(), pads.end());
+  pads_ptr = pads_vec.data();
+  std::vector<int64_t> strides_vec(strides.begin(), strides.end());
+  strides_ptr = strides_vec.data();
+#endif
+
+  CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_CONVOLUTION_DESCRIPTOR, &conv_desc));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_SPATIAL_DIMS, CUDNN_TYPE_INT64, 1, &conv_dim));
+  CHECK_CUDNN(
+      cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_COMP_TYPE, CUDNN_TYPE_DATA_TYPE, 1, &conv_dtype));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_CONV_MODE, CUDNN_TYPE_CONVOLUTION_MODE, 1,
+                                       &conv_mode));
+  CHECK_CUDNN(
+      cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_PRE_PADDINGS, CUDNN_TYPE_INT64, conv_dim, pads_ptr));
+  CHECK_CUDNN(
+      cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_POST_PADDINGS, CUDNN_TYPE_INT64, conv_dim, pads_ptr));
+  CHECK_CUDNN(
+      cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_DILATIONS, CUDNN_TYPE_INT64, conv_dim, dilation));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_desc, CUDNN_ATTR_CONVOLUTION_FILTER_STRIDES, CUDNN_TYPE_INT64, conv_dim,
+                                       strides_ptr));
+  CHECK_CUDNN(cudnnBackendFinalize(conv_desc));
+
+  // set convolution dgrad operation
+  cudnnBackendDescriptor_t conv_transpose_op;
+  float alpha = 1.0f;
+  float beta = 0.0f;
+  CHECK_CUDNN(
+      cudnnBackendCreateDescriptor(CUDNN_BACKEND_OPERATION_CONVOLUTION_BACKWARD_DATA_DESCRIPTOR, &conv_transpose_op));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_transpose_op, CUDNN_ATTR_OPERATION_CONVOLUTION_BWD_DATA_DY,
+                                       CUDNN_TYPE_BACKEND_DESCRIPTOR, 1, &input_desc));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_transpose_op, CUDNN_ATTR_OPERATION_CONVOLUTION_BWD_DATA_W,
+                                       CUDNN_TYPE_BACKEND_DESCRIPTOR, 1, &w_desc));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_transpose_op, CUDNN_ATTR_OPERATION_CONVOLUTION_BWD_DATA_DX,
+                                       CUDNN_TYPE_BACKEND_DESCRIPTOR, 1, &output_desc));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_transpose_op, CUDNN_ATTR_OPERATION_CONVOLUTION_BWD_DATA_CONV_DESC,
+                                       CUDNN_TYPE_BACKEND_DESCRIPTOR, 1, &conv_desc));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_transpose_op, CUDNN_ATTR_OPERATION_CONVOLUTION_BWD_DATA_ALPHA,
+                                       CUDNN_TYPE_FLOAT, 1, &alpha));
+  CHECK_CUDNN(cudnnBackendSetAttribute(conv_transpose_op, CUDNN_ATTR_OPERATION_CONVOLUTION_BWD_DATA_BETA,
+                                       CUDNN_TYPE_FLOAT, 1, &beta));
+  CHECK_CUDNN(cudnnBackendFinalize(conv_transpose_op));
+  return conv_transpose_op;
+}
+
 cudnnBackendDescriptor_t GetReluOp(cudnnBackendDescriptor_t input_desc, cudnnBackendDescriptor_t output_desc) {
   // set relu descriptor
   cudnnBackendDescriptor_t relu_desc;
@@ -234,6 +303,29 @@ cudnnBackendDescriptor_t GetEngineSearcher(cudnnBackendDescriptor_t op_graph) {
   return heuristic_searcher;
 }
 
+cudnnBackendDescriptor_t FindBestEngineConfig(cudnnBackendDescriptor_t searcher) {
+  cudnnBackendDescriptor_t best_engine_config;
+  CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_ENGINECFG_DESCRIPTOR, &best_engine_config));
+  int64_t config_count = 1;
+  int64_t return_config_count = -1;
+  CHECK_CUDNN(cudnnBackendGetAttribute(searcher, CUDNN_ATTR_ENGINEHEUR_RESULTS, CUDNN_TYPE_BACKEND_DESCRIPTOR,
+                                       config_count, &return_config_count, &best_engine_config));
+  return best_engine_config;
+}
+
+cudnnBackendDescriptor_t GetPlan(cudnnHandle_t handle, cudnnBackendDescriptor_t config, int64_t& workspace_bytes) {
+  cudnnBackendDescriptor_t plan;
+  CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR, &plan));
+  CHECK_CUDNN(cudnnBackendSetAttribute(plan, CUDNN_ATTR_EXECUTION_PLAN_ENGINE_CONFIG, CUDNN_TYPE_BACKEND_DESCRIPTOR, 1,
+                                       &config));
+  CHECK_CUDNN(cudnnBackendSetAttribute(plan, CUDNN_ATTR_EXECUTION_PLAN_HANDLE, CUDNN_TYPE_HANDLE, 1, &handle));
+  CHECK_CUDNN(cudnnBackendFinalize(plan));
+  int64_t return_count;
+  CHECK_CUDNN(cudnnBackendGetAttribute(plan, CUDNN_ATTR_EXECUTION_PLAN_WORKSPACE_SIZE, CUDNN_TYPE_INT64, 1,
+                                       &return_count, &workspace_bytes));
+  return plan;
+}
+
 // input : (n, c, h, w)
 // w     : (k, c, r, s)
 // output: (n, k, h, w)
@@ -245,35 +337,42 @@ int main() {
   cudnnHandle_t handle;
   CHECK_CUDNN(cudnnCreate(&handle));
 
-  int64_t n = 1, c = 32, h = 4, w = 4;
-  int64_t k = 32, r = 1, s = 1;
+  int64_t n = 1, c = 512, h = 16, w = 16;
+  int64_t k = 512, w_c = 256, r = 3, s = 3;
+  int64_t out_c = w_c, out_h = 32, out_w = 32;
+  int64_t pad = 1;
+  // int64_t out_pad = 1;
+  int64_t stride = 2;
 
   // set input descriptor
-  cudnnBackendDescriptor_t input_desc = GetTensorDescriptor({n, c, h, w}, 'x');
+  cudnnBackendDescriptor_t input_desc = GetTensorDescriptorNHWC({n, c, h, w}, 'x');
   int64_t input_size = n * c * h * w;
 
   // set filter descriptor
-  cudnnBackendDescriptor_t conv_weight_desc = GetTensorDescriptor({k, c, r, s}, 'w');
-  int64_t conv_weight_size = k * c * r * s;
+  cudnnBackendDescriptor_t conv_weight_desc = GetTensorDescriptorNHWC({k, w_c, r, s}, 'w');
+  int64_t conv_weight_size = k * w_c * r * s;
 
   // set output descriptor
-  cudnnBackendDescriptor_t conv_output_desc = GetTensorDescriptor({n, k, h, w}, 'C', true);
-  int64_t conv_output_size = n * k * h * w;
+  cudnnBackendDescriptor_t conv_output_desc = GetTensorDescriptorNHWC({n, out_c, out_h, out_w}, 'C', true);
+  int64_t conv_output_size = n * out_c * out_h * out_w;
 
-  cudnnBackendDescriptor_t z_desc = GetTensorDescriptor({n, k, h, w}, 'z');
-  int64_t z_size = n * k * h * w;
+  cudnnBackendDescriptor_t z_desc = GetTensorDescriptorNHWC({n, out_c, out_h, out_w}, 'z');
+  int64_t z_size = n * out_c * out_h * out_w;
 
-  cudnnBackendDescriptor_t add_op1_output_desc = GetTensorDescriptor({n, k, h, w}, 'A', true);
+  cudnnBackendDescriptor_t add_op1_output_desc = GetTensorDescriptorNHWC({n, out_c, out_h, out_w}, 'A');
 
-  cudnnBackendDescriptor_t bias_desc = GetTensorDescriptor({1, k, 1, 1}, 'b');
-  int64_t b_size = 1 * k * 1 * 1;
+  cudnnBackendDescriptor_t bias_desc = GetTensorDescriptorNHWC({1, out_c, 1, 1}, 'b');
+  int64_t b_size = 1 * out_c * 1 * 1;
 
-  cudnnBackendDescriptor_t add_op2_output_desc = GetTensorDescriptor({n, k, h, w}, 'B', true);
+  cudnnBackendDescriptor_t add_op2_output_desc = GetTensorDescriptorNHWC({n, out_c, out_h, out_w}, 'B');
 
-  cudnnBackendDescriptor_t output_desc = GetTensorDescriptor({n, k, h, w}, 'y');
+  cudnnBackendDescriptor_t output_desc = GetTensorDescriptorNHWC({n, out_c, out_h, out_w}, 'y');
 
   // set convolution operator
-  cudnnBackendDescriptor_t fprop = GetConvOp(input_desc, conv_weight_desc, conv_output_desc, {0, 0}, {1, 1});
+  // cudnnBackendDescriptor_t fprop =
+  //     GetConvOp(conv_output_desc, conv_weight_desc, input_desc, {pad, pad}, {stride, stride});
+  cudnnBackendDescriptor_t dgrad =
+      GetConvTransposeOp(input_desc, conv_weight_desc, conv_output_desc, {pad, pad}, {stride, stride});
 
   cudnnBackendDescriptor_t add_op1 = GetPointwiseOp(conv_output_desc, z_desc, add_op1_output_desc, CUDNN_POINTWISE_ADD);
 
@@ -281,7 +380,7 @@ int main() {
       GetPointwiseOp(add_op1_output_desc, bias_desc, add_op2_output_desc, CUDNN_POINTWISE_ADD);
 
   // set relu operator
-  cudnnBackendDescriptor_t relu = GetReluOp(add_op2_output_desc, output_desc);
+  cudnnBackendDescriptor_t relu = GetReluOp(conv_output_desc, output_desc);
 
   // set ConvTranspose, use ConvolutionBackword for impl, dy is x, w is w, dx is y
   // cudnnBackendDescriptor_t dgrad;
@@ -303,32 +402,18 @@ int main() {
   // CHECK_CUDNN(cudnnBackendFinalize(dgrad));
 
   // set graph descriptor
-  int64_t len = 4;
-  cudnnBackendDescriptor_t ops[] = {fprop, add_op1, add_op2, relu};
+  int64_t len = 2;
+  cudnnBackendDescriptor_t ops[] = {dgrad, relu};
   cudnnBackendDescriptor_t op_graph = GetGraph(handle, ops, len);
 
   // for search config
   cudnnBackendDescriptor_t heuristic_searcher = GetEngineSearcher(op_graph);
 
-  cudnnBackendDescriptor_t engcfg1;
-  CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_ENGINECFG_DESCRIPTOR, &engcfg1));
-  int64_t config_count = 1;
-  int64_t return_config_count = -1;
-  CHECK_CUDNN(cudnnBackendGetAttribute(heuristic_searcher, CUDNN_ATTR_ENGINEHEUR_RESULTS, CUDNN_TYPE_BACKEND_DESCRIPTOR,
-                                       config_count, &return_config_count, &engcfg1));
-  std::cout << "return_config_count: " << return_config_count << std::endl;
+  cudnnBackendDescriptor_t best_config = FindBestEngineConfig(heuristic_searcher);
 
   // set plan descriptor
-  cudnnBackendDescriptor_t plan;
-  CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR, &plan));
-  CHECK_CUDNN(cudnnBackendSetAttribute(plan, CUDNN_ATTR_EXECUTION_PLAN_ENGINE_CONFIG, CUDNN_TYPE_BACKEND_DESCRIPTOR, 1,
-                                       &engcfg1));
-  CHECK_CUDNN(cudnnBackendSetAttribute(plan, CUDNN_ATTR_EXECUTION_PLAN_HANDLE, CUDNN_TYPE_HANDLE, 1, &handle));
-  CHECK_CUDNN(cudnnBackendFinalize(plan));
   int64_t workspaceSize;
-  int64_t return_count;
-  CHECK_CUDNN(cudnnBackendGetAttribute(plan, CUDNN_ATTR_EXECUTION_PLAN_WORKSPACE_SIZE, CUDNN_TYPE_INT64, 1,
-                                       &return_count, &workspaceSize));
+  cudnnBackendDescriptor_t plan = GetPlan(handle, best_config, workspaceSize);
 
   // allooc device memory
   void* xData = nullptr;
