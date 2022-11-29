@@ -16,6 +16,7 @@
             "defines": [],
             "compilerPath": "/usr/local/bin/clang",
             "intelliSenseMode": "linux-clang-x64",
+            "cppStandard": "c++11",
             "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],

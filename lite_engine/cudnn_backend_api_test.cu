@@ -227,7 +227,7 @@ cudnnBackendDescriptor_t GetEngineSearcher(cudnnBackendDescriptor_t op_graph) {
   CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_ENGINEHEUR_DESCRIPTOR, &heuristic_searcher));
   CHECK_CUDNN(cudnnBackendSetAttribute(heuristic_searcher, CUDNN_ATTR_ENGINEHEUR_OPERATION_GRAPH,
                                        CUDNN_TYPE_BACKEND_DESCRIPTOR, 1, &op_graph));
-  cudnnBackendHeurMode_t search_mode = CUDNN_HEUR_MODE_A;
+  cudnnBackendHeurMode_t search_mode = CUDNN_HEUR_MODE_FALLBACK;
   CHECK_CUDNN(
       cudnnBackendSetAttribute(heuristic_searcher, CUDNN_ATTR_ENGINEHEUR_MODE, CUDNN_TYPE_HEUR_MODE, 1, &search_mode));
   CHECK_CUDNN(cudnnBackendFinalize(heuristic_searcher));
@@ -308,14 +308,7 @@ int main() {
   cudnnBackendDescriptor_t op_graph = GetGraph(handle, ops, len);
 
   // for search config
-  cudnnBackendDescriptor_t heuristic_searcher;
-  CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_ENGINEHEUR_DESCRIPTOR, &heuristic_searcher));
-  CHECK_CUDNN(cudnnBackendSetAttribute(heuristic_searcher, CUDNN_ATTR_ENGINEHEUR_OPERATION_GRAPH,
-                                       CUDNN_TYPE_BACKEND_DESCRIPTOR, 1, &op_graph));
-  cudnnBackendHeurMode_t search_mode = CUDNN_HEUR_MODE_FALLBACK;
-  CHECK_CUDNN(
-      cudnnBackendSetAttribute(heuristic_searcher, CUDNN_ATTR_ENGINEHEUR_MODE, CUDNN_TYPE_HEUR_MODE, 1, &search_mode));
-  CHECK_CUDNN(cudnnBackendFinalize(heuristic_searcher));
+  cudnnBackendDescriptor_t heuristic_searcher = GetEngineSearcher(op_graph);
 
   cudnnBackendDescriptor_t engcfg1;
   CHECK_CUDNN(cudnnBackendCreateDescriptor(CUDNN_BACKEND_ENGINECFG_DESCRIPTOR, &engcfg1));
