@@ -19,11 +19,27 @@ void test1() {
 void test2() {
   LruCache<std::vector<double>, int, VectorHash<double>> lru_cache(2);
   lru_cache.Insert(std::vector<double>{1, 2, 3}, 1);
-  lru_cache.Insert(std::vector<double>{1, 2, 4}, 1);
-  lru_cache.Insert(std::vector<double>{2, 2, 4}, 1);
+  lru_cache.Insert(std::vector<double>{1, 2, 4}, 2);
+  lru_cache.Insert(std::vector<double>{2, 2, 4}, 3);
   std::cout << std::boolalpha << "0: " << lru_cache.Contains(std::vector<double>{1, 2, 3}) << std::endl;
-  std::cout << std::boolalpha << "1: " << lru_cache.Contains(std::vector<double>{1, 2, 4}) << std::endl;
-  std::cout << std::boolalpha << "2: " << lru_cache.Contains(std::vector<double>{2, 2, 4}) << std::endl;
+  std::cout << std::boolalpha << "1: " << lru_cache.Contains(std::vector<double>{1, 2, 4})
+            << "value: " << lru_cache.At(std::vector<double>{1, 2, 4}) << std::endl;
+  std::cout << std::boolalpha << "2: " << lru_cache.Contains(std::vector<double>{2, 2, 4})
+            << "value: " << lru_cache.At(std::vector<double>{2, 2, 4}) << std::endl;
+
+  if (lru_cache.Contains(std::vector<double>{1, 2, 4})) {
+    lru_cache.At(std::vector<double>{1, 2, 4}) = -1;
+  }
+  std::cout << std::boolalpha << "0: " << lru_cache.Contains(std::vector<double>{1, 2, 3}) << std::endl;
+  std::cout << std::boolalpha << "1: " << lru_cache.Contains(std::vector<double>{1, 2, 4})
+            << "value: " << lru_cache.At(std::vector<double>{1, 2, 4}) << std::endl;
+  std::cout << std::boolalpha << "2: " << lru_cache.Contains(std::vector<double>{2, 2, 4})
+            << "value: " << lru_cache.At(std::vector<double>{2, 2, 4}) << std::endl;
+
+  std::cout << "size: " << lru_cache.Size() << std::endl;
+  lru_cache.Clear();
+  std::cout << "size: " << lru_cache.Size() << std::endl;
+
   return;
 }
 
